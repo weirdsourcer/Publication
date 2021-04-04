@@ -1,0 +1,59 @@
+---
+title: 'The Shortest Most Powerful Line of Code in Exploratory Data Analysis is in R'
+author: "Okunola Musbaudeen"
+date: "4/4/2021"
+output: html_document
+---
+
+Coding is simply the rearrangement of key words to form a coherent statement that machines can understand, without the understanding, we fail to instruct machines to do that analysis for us, or output that result we so want to present. Many a time, newbees get overwhelmed with so many functions they come across, a function that calls many functions within itself, some even call outside functions. How can newbies dissect these functions easily, what are the variables the function works with, what does one even use the function for? Today I'd like to talk about a simple yet powerful functions in R. The `str()` function.  
+
+First, let's talk about str, the idea behind this function is to return the internal structure of an object in a compact form, hence its name `str(ucture)` function. It's a simple diagnostic tool that is very versatile such that it can work with any function and object. Once called, it aims to return a compact output detailing what is contained in the object or function we call with it, even if it is nested over several layers.
+
+Let's see what it does exactly, For simplicity in case you're practicing along, let's use a dataset available in R already. My data of choice is the `infert` dataset because I've never explored the dataset before. So…
+
+```{r}
+head(infert, 5)
+```
+
+
+`infert` is a dataset about infertility after sponteneous and induced abortion, so if we want a snapshot of the data, we can check the structure...
+
+```{r} 
+str(infert)
+```
+
+...now we know that the dataset has 248 observations and 8 varibales, we can also see the names of the variables, the first rows of the data, and the datatype with `str()`. The datatype that holds more details, education being a _factor_ gets expatiated, we see it has 3 levels and the first levels are also listed. This gives us a quick sense of what the data looks like.
+
+Structure can also work on functions to show a snapshot the arguements the function works on, let's try it on a function
+
+```{r} 
+str(ls)
+```
+
+we can see that *lm* is a function, and most arguments are displayed already, reading function documentaions is great but most documenation readings can be avoided if we use str more often. Let's on a nexted dataset, a dataframe of dataframes...
+
+We'll use the EuStockMarkets here..
+
+```{r}
+str(EuStockMarkets)
+```
+
+After checking the structure, we see it's a time series dataset, so it isn't a great dataset to illustrate what I'm about to show you. So let's return to our first data because the data still make senses after splitting.
+
+```{r}
+Infertile <- split(infert, infert$education)
+```
+
+We've split our dataframe into 3 dataframes, all packed into a dataframe named *Infertile*, let's see the dataframes diffrently.
+
+```{r}
+lapply(Infertile, head)
+```
+Then let's go ahead and check `Infertile` structure
+```{r} 
+str(Infertile)
+```
+
+This lists the dataframes then go ahead to detail the structure of the objects in each dataframe, commonly refer to as element, contained in Infertile. We can see from the first lines of these elements that *0-5yrs* has 12 observations, *6-11yrs* has 120 observations, and *12+ yrs* has 116 observations. Do with that piece of info what you wish.
+
+We can now see the power of `str()`, it gives a nice as-compact-as-it-can-get view of data so you can get a quick understanding of what's missing and the next step you need to take in your EDA. So anytime you have an R object and you don't know what is in it, I implore you to throw a `str()` at it.
